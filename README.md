@@ -35,20 +35,20 @@ OPTIONS:
 
 Let us see some practical examples.  
 
-1. `Evaluate (-5 + sqrt(25-16))/2`:
+1. Evaluate `(-5 + sqrt(25-16))/2`:
     ```
     -5 25 16 - v + 2 / p
     ```
     _`v` stands for square root and `p` stands for print_
-2. `Evaluate (0.5+0.9)/3^4`
+2. Evaluate `(0.5+0.9)/3^4`
     ```
     0.5 0.9 + 3 4 ^ p
     ```
-3. `Evalute 10 + 5 inline`:
+3. Evaluate `10 + 5 inline`:
     ```bash
     $> dc -e "10 5 +"
     ```
-4. `Evaluate a file full expressions`:
+4. Evaluate a file full expressions`:
     ```bash
     $> cat foo
         5 5 + 
