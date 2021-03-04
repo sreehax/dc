@@ -1,3 +1,10 @@
+/* 
+* dc is an arbitrary precision RPN calculator 
+* (re)written in Rust. This tool is NOT 
+* part of the GNU coreutils
+* by Marco Cetica 2021
+*
+*/
 extern crate clap;
 const DC_VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
