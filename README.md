@@ -1,4 +1,4 @@
-# dc
+# dc [![Build Status](https://www.travis-ci.com/ice-bit/dc.svg?branch=main)](https://www.travis-ci.com/ice-bit/dc)
 `dc` is a RPN calculator written in Rust that aims to be the UNIX's dc clone. This implementation of `dc`
 does supports only a proper subset of the `dc`'s features(see below for a detailed list).  
 
@@ -57,11 +57,6 @@ Let us see some practical examples.
     $> dc -f ./foo
     ```
 
-## Man page
-_TODO:_
-
-
-
 ## Features
 As stated above, this tool only supports a proper subset of 
 original UNIX's `dc`. Here a complete list:
@@ -83,7 +78,7 @@ This `dc` implementation has a virtually endless stack, supports
 floating point arithmetic(standard IEE754 double precision),
 inline expression parsing and file parsing.
 
-## Uni test
+## Unit test
 TODO:
 
 
