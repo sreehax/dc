@@ -114,6 +114,11 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
             },
 
             "p" => { // PRINT TOP ELEMENT OF THE STACK
+                // Check whether stack is empty
+                if stack.is_empty() {
+                    println!("ERR: stack is empty");
+                    continue;
+                }
                 let head = stack.last().unwrap();
                 if head.fract() == 0.0 { // If number is integer
                     println!("{0}", head); // Print without any rounding
