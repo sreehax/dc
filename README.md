@@ -8,7 +8,7 @@ Since `dc` is written in Rust(at least mine), you need to install a
 Then you can just type:
 
 ```bash
-cargo build --release
+cargo build --release --verbose
 ```
 You will find the executable file under `target/release/dc`.
 
@@ -79,7 +79,10 @@ floating point arithmetic(standard IEE754 double precision),
 inline expression parsing and file parsing.
 
 ## Unit test
-TODO:
+To execute tests type:
+```bash
+cargo test --release --verbose
+```
 
 
 ## License
