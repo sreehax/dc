@@ -59,13 +59,16 @@ fn main(){
             // Open file
             let mut file_stream = match File::open(&file_path) {
                 Ok(file_stream) => file_stream,
-                Err(err) => panic!("Unable to open file \"{0}\": \"{1}\"", &file_path, err),
+                Err(err) => {
+                    println!("Unable to open file \"{0}\": \"{1}\"", &file_path, err);
+                    std::process::exit(1);
+                },
             };
             // Read file's content
             let mut file_buffer = String::new();
             match file_stream.read_to_string(&mut file_buffer) {
                 Ok(_) => (),
-                Err(err) => panic!("Unable to read from file \"{0}\": \"{1}\"", file_path, err),
+                Err(err) => eprintln!("Unable to read from file \"{0}\": \"{1}\"", file_path, err),
             }
 
             // Tokenize buffer
