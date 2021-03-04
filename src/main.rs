@@ -153,6 +153,7 @@ fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
 fn main(){
     let mut user_input = String::new(); // Raw user input
     let mut stack_vec: Vec<f64> = Vec::new(); // Emulate a stack for Reverse Polish Notation
+    let mut cli_args: bool = false; // Check whether user called program trough non-interactive mode
 
     // Handle command line arguments
     let matches = App::new("dc - RPN Desk calculator")
@@ -164,12 +165,14 @@ fn main(){
                             .long("expression")
                             .required(false)
                             .takes_value(true)
+                            .multiple(true)
                             .help("evaluate expression")
                         ).arg(Arg::with_name("file")
                             .short("f")
                             .long("file")
                             .required(false)
                             .takes_value(true)
+                            .multiple(true)
                             .help("evaluate contents of file")
                         ).arg(Arg::with_name("version")
                         .short("V")
@@ -180,36 +183,40 @@ fn main(){
 
     // Handle command line parameters if required
     if matches.is_present("expression") { // Inline expression option
-        let expression = matches.value_of("expression").unwrap(); // Retrieve parameter
-        // Tokenize expression
-        let tokens: Vec<&str> = expression.trim().split(' ').collect();
-        // Evaluate expression
-        evaluate_expression(tokens, &mut stack_vec);
+        let expressions: Vec<&str> = matches.values_of("expression").unwrap().collect(); // Retrieve parameter
+        for expression in expressions { // Handle multiple expressions at once
+            // Tokenize expression
+            let tokens: Vec<&str> = expression.trim().split(' ').collect();
+            // Evaluate expression
+            evaluate_expression(tokens, &mut stack_vec);
+        }
         // There's nothing left to do
-        std::process::exit(0);
+        cli_args = true;
     }
 
     if matches.is_present("file") { // Evaluate file option
-        let file_path = matches.value_of("file"); // Retrieve parameter
-        // Open file
-        let mut file_stream = match File::open(&file_path.unwrap()) {
-            Ok(file_stream) => file_stream,
-            Err(err) => panic!("Unable to open file \"{0}\": \"{1}\"", &file_path.unwrap(), err),
-        };
-        // Read file's content
-        let mut file_buffer = String::new();
-        match file_stream.read_to_string(&mut file_buffer) {
-            Ok(_) => (),
-            Err(err) => panic!("Unable to read from file \"{0}\": \"{1}\"", file_path.unwrap(), err),
-        }
+        let files_path: Vec<&str> = matches.values_of("file").unwrap().collect(); // Retrieve parameter
+        for file_path in files_path { // Handle multiple files at once
+            // Open file
+            let mut file_stream = match File::open(&file_path) {
+                Ok(file_stream) => file_stream,
+                Err(err) => panic!("Unable to open file \"{0}\": \"{1}\"", &file_path, err),
+            };
+            // Read file's content
+            let mut file_buffer = String::new();
+            match file_stream.read_to_string(&mut file_buffer) {
+                Ok(_) => (),
+                Err(err) => panic!("Unable to read from file \"{0}\": \"{1}\"", file_path, err),
+            }
 
-        // Tokenize buffer
-        file_buffer.retain(|c| {c != '\n'});
-        let tokens: Vec<&str> = file_buffer.split(' ').collect();
-        // Evaluate buffer
-        evaluate_expression(tokens, &mut stack_vec);
+            // Tokenize buffer
+            file_buffer.retain(|c| {c != '\n'});
+            let tokens: Vec<&str> = file_buffer.split(' ').collect();
+            // Evaluate buffer
+            evaluate_expression(tokens, &mut stack_vec);
+        }
         // There's nothing left to do
-        std::process::exit(0);
+        cli_args = true;
     }
 
     if matches.is_present("version") {
@@ -218,8 +225,18 @@ fn main(){
             This tool is NOT part of the GNU coreutils.\n\
             Developed by Marco C.(<ceticamarco@gmail.com>) (c) 2021", 
             version=DC_VERSION);
-        std::process::exit(0);
+
+        cli_args = true;
     }
+
+    /* If cli_args is set, it means that user has already
+     * used the tool through cli arguments.
+     * We cannot do this using std::process::exit(0)
+     * since it would prevent multiple instance of the same
+     * parameter(for instance multiples -f or multiples -e)  */
+     if cli_args == true {
+         std::process::exit(0);
+     }
 
     // Otherwise, just read from standard input
     loop {
