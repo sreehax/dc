@@ -1,6 +1,7 @@
 # dc [![Build Status](https://www.travis-ci.com/ice-bit/dc.svg?branch=main)](https://www.travis-ci.com/ice-bit/dc)
 `dc` is a RPN calculator written in Rust that aims to be the UNIX's dc clone. This implementation of `dc`
 does supports only a proper subset of the `dc`'s features(see below for a detailed list).  
+![example](.screen.png)
 
 ## Installation
 Since `dc` is written in Rust(at least mine), you need to install a 
