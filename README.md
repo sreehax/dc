@@ -56,6 +56,10 @@ Let us see some practical examples.
         f
     $> dc -f ./foo
     ```
+5. Evalute `sin(2pi)+cos(2pi)`:(FIXME: fix this mess)
+```
+$> dc -e "$(dc -e '2 pi * pd') sin $(dc -e '2 pi * pd') cos + p"
+```
 
 ## Features
 As stated above, this tool only supports a proper subset of 
