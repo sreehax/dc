@@ -79,6 +79,7 @@ original UNIX's `dc`. Here a complete list:
 |   `acos`|    Compute arccosine  |
 |   `atan`|    Compute arctangent |
 |   `fp`  |Print top element(converting from radiants)|
+
 This `dc` implementation has a virtually endless stack, supports 
 floating point arithmetic(standard IEE754 double precision),
 inline expression parsing and file parsing.
