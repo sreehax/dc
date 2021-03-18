@@ -1,4 +1,4 @@
-// Convert from degree to radians and viceversa
+// Convert from degree to radians and vice versa
 pub fn deg_to_rad(angle: f64) -> f64 {
     (angle * std::f64::consts::PI)/180.0
 }
@@ -7,8 +7,9 @@ pub fn rad_to_deg(radian: f64) -> f64 {
     (radian * 180.0)/std::f64::consts::PI
 }
 
-// Evaluate a prefix(RPN) expression
-pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
+/* Evaluate a prefix(RPN) expression
+ * Returns false on syntax/domain errors */
+pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) -> bool {
     // For each item, match available operations
     for token in expr {
         match token {
@@ -17,10 +18,10 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 2 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Pops two elements, sum them and push the result back to the stack
-                let sum = stack.pop().unwrap() + stack.pop().unwrap();
+                let sum: f64 = stack.pop().unwrap() + stack.pop().unwrap();
                 stack.push(sum);
             },
 
@@ -28,10 +29,10 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 2 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Pops two elements, subtract them and push the result back to the stack
-                let sub = -(stack.pop().unwrap() - stack.pop().unwrap());
+                let sub: f64 = -(stack.pop().unwrap() - stack.pop().unwrap());
                 stack.push(sub);
             },
 
@@ -39,10 +40,10 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 2 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Pops two elements, multiply them and push the result back to the stack
-                let mul = stack.pop().unwrap() * stack.pop().unwrap();
+                let mul: f64 = stack.pop().unwrap() * stack.pop().unwrap();
                 stack.push(mul);
             },
 
@@ -50,16 +51,16 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 2 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Pops two elements
-                let divisor = stack.pop().unwrap();
+                let divisor: f64 = stack.pop().unwrap();
                 // Check if divisor is equal to zero
                 if divisor == 0.0 {
                     println!("ERR: unable to divide by zero.");
-                    continue;
+                    return false;
                 } else {
-                    let dividend = stack.pop().unwrap();
+                    let dividend : f64= stack.pop().unwrap();
                     stack.push(dividend / divisor);
                 }
             },
@@ -68,16 +69,16 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 2 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
-                // Pops two elements
-                let second_term = stack.pop().unwrap();
+                // Pops two ele:ments
+                let second_term: f64 = stack.pop().unwrap();
                 // Check if remainder is equal to zero
                 if second_term == 0.0 {
                     println!("ERR: unable to divide by zero.");
-                    continue;
+                    return false;
                 } else {
-                    let first_term = stack.pop().unwrap();
+                    let first_term: f64 = stack.pop().unwrap();
                     stack.push(first_term % second_term);
                 }
             },
@@ -86,11 +87,11 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 2 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Pops two elements
-                let exponent = stack.pop().unwrap();
-                let base = stack.pop().unwrap();
+                let exponent: f64 = stack.pop().unwrap();
+                let base: f64 = stack.pop().unwrap();
                 // Compute the exponent and push the result to the stack
                 stack.push(base.powf(exponent));
             },
@@ -99,10 +100,10 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 1 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Pops one element
-                let argument = stack.pop().unwrap();
+                let argument: f64 = stack.pop().unwrap();
                 stack.push(argument.sqrt());
             },
 
@@ -110,11 +111,11 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 1 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Convert angle to radians
-                let angle = stack.pop().unwrap();
-                let rad = deg_to_rad(angle);
+                let angle: f64 = stack.pop().unwrap();
+                let rad: f64 = deg_to_rad(angle);
                 stack.push(rad.sin());
             },
 
@@ -122,11 +123,11 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 1 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Convert angle to radians
-                let angle = stack.pop().unwrap();
-                let rad = deg_to_rad(angle);
+                let angle: f64 = stack.pop().unwrap();
+                let rad: f64 = deg_to_rad(angle);
                 stack.push(rad.cos());
             },
 
@@ -134,11 +135,11 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 1 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Convert angle to radians
-                let angle = stack.pop().unwrap();
-                let rad = deg_to_rad(angle);
+                let angle: f64 = stack.pop().unwrap();
+                let rad: f64 = deg_to_rad(angle);
                 stack.push(rad.tan());
             },
 
@@ -146,33 +147,51 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check if stack has enough items
                 if stack.len() < 1 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Compute function
-                let angle = stack.pop().unwrap();
-                stack.push(angle.asin());
+                let angle: f64 = stack.pop().unwrap();
+                // Check if number is not in the range [-1;1]
+                if angle >= -1.0 && angle <= 1.0 {
+                    stack.push(angle.asin());
+                } else {
+                    println!("ERR: asin() function is defined in the range [-1;1]");
+                    return false;
+                }
             },
 
             "acos" => { // ARCCOSINE
                 // Check if stack has enough items
                 if stack.len() < 1 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Compute function
-                let angle = stack.pop().unwrap();
-                stack.push(angle.acos());
+                let angle: f64 = stack.pop().unwrap();
+                // Check if number is not in the range [-1;1]
+                if angle >= -1.0 && angle <= 1.0 {
+                    stack.push(angle.acos());
+                } else {
+                    println!("ERR: acos() function is defined in the range [-1;1]");
+                    return false;
+                }
             },
 
-            "atan" => { // ARCTAN
+            "atan" => { // ARCTANGENT
                 // Check if stack has enough items
                 if stack.len() < 1 {
                     println!("ERR: stack is empty or either has too few elements.");
-                    continue;
+                    return false;
                 }
                 // Compute function
-                let angle = stack.pop().unwrap();
-                stack.push(angle.atan());
+                let angle: f64 = stack.pop().unwrap();
+                // Check if number is not in the range [-1;1]
+                if angle >= -(std::f64::consts::PI/2.0) && angle <= (std::f64::consts::PI/2.0) {
+                    stack.push(angle.atan());
+                } else {
+                    println!("ERR: atan() function is defined in the range [-pi/2;pi/2]");
+                    return false;
+                }
             },
             // Stack options
 
@@ -184,9 +203,9 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check whether stack is empty
                 if stack.is_empty() {
                     println!("ERR: stack is empty");
-                    continue;
+                    return false;
                 }
-                let top_el = stack.last().cloned();
+                let top_el: std::option::Option<f64> = stack.last().cloned();
                 stack.push(top_el.unwrap());
             },
 
@@ -194,9 +213,9 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 // Check whether stack is empty
                 if stack.is_empty() {
                     println!("ERR: stack is empty");
-                    continue;
+                    return false;
                 }
-                let head = stack.last().unwrap();
+                let head: &f64 = stack.last().unwrap();
                 if head.fract() == 0.0 { // If number is integer
                     println!("{0}", head); // Print without any rounding
                 } else {
@@ -204,13 +223,13 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 }
             },
 
-            "pd" => { // PRINT TOP ELEMENT CONVERTING TO DEGREE
+            "pd" => { // PRINT TOP ELEMENT IN DEGREE
                 // Check whether stack is empty
                 if stack.is_empty() {
                     println!("ERR: stack is empty!");
-                    continue;
+                    return false;
                 }
-                let head = stack.last().unwrap();
+                let head: &f64 = stack.last().unwrap();
                 if head.fract() == 0.0 { // If number is integer
                     println!("{0}", rad_to_deg(*head));
                 } else {
@@ -218,14 +237,14 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 }
             },
 
-            "pi" => { // PUSH PI TO THE STACK
-                stack.push(std::f64::consts::PI);
-            }
-
             "f" => { // PRINT ENTIRE STACK
                 for item in stack.clone() {
                     println!("{0}", item); // Print without rounding
                 }
+            },
+
+            "q" => { // EXIT
+                std::process::exit(0);
             },
 
             // Default case
@@ -238,4 +257,6 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
             }
         }
     }
+
+    true
 }

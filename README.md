@@ -56,9 +56,9 @@ Let us see some practical examples.
         f
     $> dc -f ./foo
     ```
-5. Evalute `sin(2pi)+cos(2pi)`:(FIXME: fix this mess)
+5. Evaluate `sin(2pi)+cos(2pi)`
 ```
-$> dc -e "$(dc -e '2 pi * pd') sin $(dc -e '2 pi * pd') cos + p"
+$> dc -e "2 180 * sin 2 180 * cos + p"
 ```
 
 ## Features
@@ -83,20 +83,21 @@ original UNIX's `dc`. Here a complete list:
 |   `acos`|    Compute arccosine  |
 |   `atan`|    Compute arctangent |
 |   `fp`  |Print top element(converting from radiants)|
+|   `q`  | Quit the program |
 
 This `dc` implementation has a virtually endless stack, supports 
 floating point arithmetic(standard IEE754 double precision),
 inline expression parsing and file parsing.
 **NOTE**: by default, all trigonometrical functions
-push result in radiant, in order to print as degree, you can 
-use the `fp` command.
+get input in degree and return an output in radiants.
+In order to print the top element of the stack
+in degree, you can use the `fp` command.
 
 ## Unit test
 To execute tests type:
 ```bash
 cargo test --release --verbose
 ```
-
 
 ## License
 This product is licensed under 

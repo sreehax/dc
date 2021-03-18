@@ -16,7 +16,7 @@ use clap::{Arg, App};
 mod evaluate_expr;
 
 fn main(){
-    let mut user_input = String::new(); // Raw user input
+    let mut user_input: std::string::String = String::new(); // Raw user input
     let mut stack_vec: Vec<f64> = Vec::new(); // Emulate a stack for Reverse Polish Notation
     let mut cli_args: bool = false; // Check whether user called program trough non-interactive mode
 
@@ -64,7 +64,7 @@ fn main(){
         let files_path: Vec<&str> = matches.values_of("file").unwrap().collect(); // Retrieve parameter
         for file_path in files_path { // Handle multiple files at once
             // Open file
-            let mut file_stream = match File::open(&file_path) {
+            let mut file_stream: std::fs::File = match File::open(&file_path) {
                 Ok(file_stream) => file_stream,
                 Err(err) => {
                     println!("Unable to open file \"{0}\": \"{1}\"", &file_path, err);
@@ -72,7 +72,7 @@ fn main(){
                 },
             };
             // Read file's content
-            let mut file_buffer = String::new();
+            let mut file_buffer: std::string::String = String::new();
             match file_stream.read_to_string(&mut file_buffer) {
                 Ok(_) => (),
                 Err(err) => eprintln!("Unable to read from file \"{0}\": \"{1}\"", file_path, err),

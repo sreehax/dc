@@ -226,6 +226,19 @@ fn testing_arcsine() {
 }
 
 #[test]
+fn testing_arcsine_out_of_domain() {
+    let mut stack_vec: Vec<f64> = Vec::new();
+    let tokens: Vec<&str> = vec!["-5", "asin"];
+
+    assert!(
+        evaluate_expr::evaluate_expression(
+            tokens.clone(),
+            &mut stack_vec
+        ) == false
+    );
+}
+
+#[test]
 fn testing_arccosine() {
     let mut stack_vec: Vec<f64> = Vec::new();
     let tokens: Vec<&str> = vec!["0", "acos"];
@@ -238,6 +251,19 @@ fn testing_arccosine() {
 }
 
 #[test]
+fn testing_arccosine_out_of_domain() {
+    let mut stack_vec: Vec<f64> = Vec::new();
+    let tokens: Vec<&str> = vec!["+5", "acos"];
+
+    assert!(
+        evaluate_expr::evaluate_expression(
+            tokens.clone(),
+            &mut stack_vec
+        ) == false
+    );
+}
+
+#[test]
 fn testing_arctangent() {
     let mut stack_vec: Vec<f64> = Vec::new();
     let tokens: Vec<&str> = vec!["1", "atan"];
@@ -247,6 +273,19 @@ fn testing_arctangent() {
         &mut stack_vec
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), evaluate_expr::deg_to_rad(45.0));
+}
+
+#[test]
+fn testing_arctangent_out_of_domain() {
+    let mut stack_vec: Vec<f64> = Vec::new();
+    let tokens: Vec<&str> = vec!["270", "atan"];
+
+    assert!(
+        evaluate_expr::evaluate_expression(
+            tokens.clone(),
+            &mut stack_vec
+        ) == false
+    );
 }
 
 // Stack operations
@@ -265,18 +304,6 @@ fn testing_stack_pushing() {
         let actual: f64 = *item.1;
         assert_eq!(expected, actual);
     }
-}
-
-#[test]
-fn testing_pi_pushing() {
-    let mut stack_vec: Vec<f64> = Vec::new();
-    let tokens: Vec<&str> = vec!["pi"];
-
-    evaluate_expr::evaluate_expression(
-        tokens.clone(),
-        &mut stack_vec
-    );
-    assert_eq!(stack_vec.last().cloned().unwrap(), std::f64::consts::PI);
 }
 
 #[test]
