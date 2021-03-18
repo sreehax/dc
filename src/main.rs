@@ -22,7 +22,7 @@ fn main(){
 
     // Handle command line arguments
     let matches = App::new("dc - RPN Desk calculator")
-                        .version("0.1.0")
+                        .version(DC_VERSION)
                         .author("Marco C. <ceticamarco@gmail.com>")
                         .about("UNIX's dc clone")
                         .arg(Arg::with_name("expression")
