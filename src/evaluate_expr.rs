@@ -1,3 +1,12 @@
+// Convert from degree to radians and viceversa
+pub fn deg_to_rad(angle: f64) -> f64 {
+    (angle * std::f64::consts::PI)/180.0
+}
+
+pub fn rad_to_deg(radian: f64) -> f64 {
+    (radian * 180.0)/std::f64::consts::PI
+}
+
 // Evaluate a prefix(RPN) expression
 pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
     // For each item, match available operations
@@ -96,7 +105,75 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                 let argument = stack.pop().unwrap();
                 stack.push(argument.sqrt());
             },
-            
+
+            "sin" => { // SINE
+                // Check if stack has enough items
+                if stack.len() < 1 {
+                    println!("ERR: stack is empty or either has too few elements.");
+                    continue;
+                }
+                // Convert angle to radians
+                let angle = stack.pop().unwrap();
+                let rad = deg_to_rad(angle);
+                stack.push(rad.sin());
+            },
+
+            "cos" => { // COSINE
+                // Check if stack has enough items
+                if stack.len() < 1 {
+                    println!("ERR: stack is empty or either has too few elements.");
+                    continue;
+                }
+                // Convert angle to radians
+                let angle = stack.pop().unwrap();
+                let rad = deg_to_rad(angle);
+                stack.push(rad.cos());
+            },
+
+            "tan" => { // TANGENT
+                // Check if stack has enough items
+                if stack.len() < 1 {
+                    println!("ERR: stack is empty or either has too few elements.");
+                    continue;
+                }
+                // Convert angle to radians
+                let angle = stack.pop().unwrap();
+                let rad = deg_to_rad(angle);
+                stack.push(rad.tan());
+            },
+
+            "asin" => { // ARCSINE
+                // Check if stack has enough items
+                if stack.len() < 1 {
+                    println!("ERR: stack is empty or either has too few elements.");
+                    continue;
+                }
+                // Compute function
+                let angle = stack.pop().unwrap();
+                stack.push(angle.asin());
+            },
+
+            "acos" => { // ARCCOSINE
+                // Check if stack has enough items
+                if stack.len() < 1 {
+                    println!("ERR: stack is empty or either has too few elements.");
+                    continue;
+                }
+                // Compute function
+                let angle = stack.pop().unwrap();
+                stack.push(angle.acos());
+            },
+
+            "atan" => { // ARCTAN
+                // Check if stack has enough items
+                if stack.len() < 1 {
+                    println!("ERR: stack is empty or either has too few elements.");
+                    continue;
+                }
+                // Compute function
+                let angle = stack.pop().unwrap();
+                stack.push(angle.atan());
+            },
             // Stack options
 
             "c" => { // CLEAR THE STACK
@@ -126,6 +203,24 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) {
                     println!("{0:.4}", head); // Print with radix = 4
                 }
             },
+
+            "pd" => { // PRINT TOP ELEMENT CONVERTING TO DEGREE
+                // Check whether stack is empty
+                if stack.is_empty() {
+                    println!("ERR: stack is empty!");
+                    continue;
+                }
+                let head = stack.last().unwrap();
+                if head.fract() == 0.0 { // If number is integer
+                    println!("{0}", rad_to_deg(*head));
+                } else {
+                    println!("{0:.4}", rad_to_deg(*head));
+                }
+            },
+
+            "pi" => { // PUSH PI TO THE STACK
+                stack.push(std::f64::consts::PI);
+            }
 
             "f" => { // PRINT ENTIRE STACK
                 for item in stack.clone() {

@@ -1,7 +1,7 @@
 use super::evaluate_expr;
 
-// Math operations
 
+// Math operations
 #[test]
 fn testing_integer_addition() {
     let mut stack_vec: Vec<f64> = Vec::new();
@@ -159,6 +159,96 @@ fn testing_modulo() {
     assert_eq!(stack_vec.last().cloned().unwrap(), 1.0);
 }
 
+#[test]
+fn testing_deg_to_rad() {
+    let angle = 180.0;
+    let theta = evaluate_expr::deg_to_rad(
+        angle
+    );
+    assert_eq!(theta, std::f64::consts::PI);
+}
+
+#[test]
+fn testing_rad_to_deg() {
+    let angle = std::f64::consts::PI;
+    let theta = evaluate_expr::rad_to_deg(
+        angle
+    );
+    assert_eq!(theta, 180.0);
+}
+
+#[test]
+fn testing_sine() {
+    let mut stack_vec: Vec<f64> = Vec::new();
+    let tokens: Vec<&str> = vec!["90", "sin"];
+
+    evaluate_expr::evaluate_expression(
+        tokens.clone(),
+        &mut stack_vec
+    );
+    assert_eq!(stack_vec.last().cloned().unwrap(), 1.0);
+}
+
+#[test]
+fn testing_cosine() {
+    let mut stack_vec: Vec<f64> = Vec::new();
+    let tokens: Vec<&str> = vec!["0", "cos"];
+
+    evaluate_expr::evaluate_expression(
+        tokens.clone(),
+        &mut stack_vec
+    );
+    assert_eq!(stack_vec.last().cloned().unwrap(), 1.0);
+}
+
+#[test]
+fn testing_tangent() {
+    let mut stack_vec: Vec<f64> = Vec::new();
+    let tokens: Vec<&str> = vec!["45", "tan"];
+
+    evaluate_expr::evaluate_expression(
+        tokens.clone(),
+        &mut stack_vec
+    );
+    assert_eq!(stack_vec.last().cloned().unwrap().round(), 1.0);
+}
+
+#[test]
+fn testing_arcsine() {
+    let mut stack_vec: Vec<f64> = Vec::new();
+    let tokens: Vec<&str> = vec!["1", "asin"];
+
+    evaluate_expr::evaluate_expression(
+        tokens.clone(),
+        &mut stack_vec
+    );
+    assert_eq!(stack_vec.last().cloned().unwrap(), evaluate_expr::deg_to_rad(90.0));
+}
+
+#[test]
+fn testing_arccosine() {
+    let mut stack_vec: Vec<f64> = Vec::new();
+    let tokens: Vec<&str> = vec!["0", "acos"];
+
+    evaluate_expr::evaluate_expression(
+        tokens.clone(),
+        &mut stack_vec
+    );
+    assert_eq!(stack_vec.last().cloned().unwrap(), evaluate_expr::deg_to_rad(90.0));
+}
+
+#[test]
+fn testing_arctangent() {
+    let mut stack_vec: Vec<f64> = Vec::new();
+    let tokens: Vec<&str> = vec!["1", "atan"];
+
+    evaluate_expr::evaluate_expression(
+        tokens.clone(),
+        &mut stack_vec
+    );
+    assert_eq!(stack_vec.last().cloned().unwrap(), evaluate_expr::deg_to_rad(45.0));
+}
+
 // Stack operations
 #[test]
 fn testing_stack_pushing() {
@@ -175,6 +265,18 @@ fn testing_stack_pushing() {
         let actual: f64 = *item.1;
         assert_eq!(expected, actual);
     }
+}
+
+#[test]
+fn testing_pi_pushing() {
+    let mut stack_vec: Vec<f64> = Vec::new();
+    let tokens: Vec<&str> = vec!["pi"];
+
+    evaluate_expr::evaluate_expression(
+        tokens.clone(),
+        &mut stack_vec
+    );
+    assert_eq!(stack_vec.last().cloned().unwrap(), std::f64::consts::PI);
 }
 
 #[test]
