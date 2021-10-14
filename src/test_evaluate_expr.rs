@@ -9,7 +9,8 @@ fn testing_integer_addition() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 9.0);
 }
@@ -21,7 +22,8 @@ fn testing_floating_addition() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 0.30000000000000004);
 }
@@ -33,7 +35,8 @@ fn testing_integer_subtraction() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 1.0);
 }
@@ -45,7 +48,8 @@ fn testing_floating_subtraction() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 1.2000000000000002);
 }
@@ -57,7 +61,8 @@ fn testing_integer_multiplication() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 20.0);
 }
@@ -70,7 +75,8 @@ fn testing_floating_multiplication() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 0.84);
 }
@@ -82,7 +88,8 @@ fn testing_integer_division() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 5.0);
 }
@@ -94,7 +101,8 @@ fn testing_floating_division() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 1.4285714285714286);
 }
@@ -106,7 +114,8 @@ fn testing_division_by_zero() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 1.0);
 }
@@ -118,7 +127,8 @@ fn testing_exponential() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 16.0);
 }
@@ -130,7 +140,8 @@ fn testing_integer_square_root() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 16.0);
 }
@@ -142,7 +153,8 @@ fn testing_floating_square_root() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 2.23606797749979);
 }
@@ -154,27 +166,10 @@ fn testing_modulo() {
 
     evaluate_expr::evaluate_expression(
         tokens,
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 1.0);
-}
-
-#[test]
-fn testing_deg_to_rad() {
-    let angle = 180.0;
-    let theta = evaluate_expr::deg_to_rad(
-        angle
-    );
-    assert_eq!(theta, std::f64::consts::PI);
-}
-
-#[test]
-fn testing_rad_to_deg() {
-    let angle = std::f64::consts::PI;
-    let theta = evaluate_expr::rad_to_deg(
-        angle
-    );
-    assert_eq!(theta, 180.0);
 }
 
 #[test]
@@ -184,7 +179,8 @@ fn testing_sine() {
 
     evaluate_expr::evaluate_expression(
         tokens.clone(),
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 1.0);
 }
@@ -196,7 +192,8 @@ fn testing_cosine() {
 
     evaluate_expr::evaluate_expression(
         tokens.clone(),
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap(), 1.0);
 }
@@ -208,7 +205,8 @@ fn testing_tangent() {
 
     evaluate_expr::evaluate_expression(
         tokens.clone(),
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     assert_eq!(stack_vec.last().cloned().unwrap().round(), 1.0);
 }
@@ -220,9 +218,10 @@ fn testing_arcsine() {
 
     evaluate_expr::evaluate_expression(
         tokens.clone(),
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
-    assert_eq!(stack_vec.last().cloned().unwrap(), evaluate_expr::deg_to_rad(90.0));
+    assert_eq!(stack_vec.last().cloned().unwrap(), 90.0f64.to_radians());
 }
 
 #[test]
@@ -233,7 +232,8 @@ fn testing_arcsine_out_of_domain() {
     assert!(
         evaluate_expr::evaluate_expression(
             tokens.clone(),
-            &mut stack_vec
+            &mut stack_vec,
+            &mut evaluate_expr::Settings::new()
         ) == false
     );
 }
@@ -245,9 +245,10 @@ fn testing_arccosine() {
 
     evaluate_expr::evaluate_expression(
         tokens.clone(),
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
-    assert_eq!(stack_vec.last().cloned().unwrap(), evaluate_expr::deg_to_rad(90.0));
+    assert_eq!(stack_vec.last().cloned().unwrap(), 90.0f64.to_radians());
 }
 
 #[test]
@@ -258,7 +259,8 @@ fn testing_arccosine_out_of_domain() {
     assert!(
         evaluate_expr::evaluate_expression(
             tokens.clone(),
-            &mut stack_vec
+            &mut stack_vec,
+            &mut evaluate_expr::Settings::new()
         ) == false
     );
 }
@@ -270,9 +272,10 @@ fn testing_arctangent() {
 
     evaluate_expr::evaluate_expression(
         tokens.clone(),
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
-    assert_eq!(stack_vec.last().cloned().unwrap(), evaluate_expr::deg_to_rad(45.0));
+    assert_eq!(stack_vec.last().cloned().unwrap(), 45.0f64.to_radians());
 }
 
 #[test]
@@ -283,7 +286,8 @@ fn testing_arctangent_out_of_domain() {
     assert!(
         evaluate_expr::evaluate_expression(
             tokens.clone(),
-            &mut stack_vec
+            &mut stack_vec,
+            &mut evaluate_expr::Settings::new()
         ) == false
     );
 }
@@ -296,7 +300,8 @@ fn testing_stack_pushing() {
 
     evaluate_expr::evaluate_expression(
         tokens.clone(),
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
 
     for item in tokens.iter().zip(stack_vec.iter()) {
@@ -313,12 +318,14 @@ fn testing_stack_erasing() {
 
     evaluate_expr::evaluate_expression(
         tokens.clone(),
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
 
     evaluate_expr::evaluate_expression(
         vec!["c"],
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     
     assert!(stack_vec.is_empty());
@@ -331,7 +338,8 @@ fn testing_duplicate() {
 
     evaluate_expr::evaluate_expression(
         tokens.clone(),
-        &mut stack_vec
+        &mut stack_vec,
+        &mut evaluate_expr::Settings::new()
     );
     
     assert_eq!(stack_vec, vec![1.0, 1.0]);

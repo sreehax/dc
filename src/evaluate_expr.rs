@@ -1,15 +1,16 @@
-// Convert from degree to radians and vice versa
-pub fn deg_to_rad(angle: f64) -> f64 {
-    (angle * std::f64::consts::PI)/180.0
+pub struct Settings {
+    use_radians: bool
 }
 
-pub fn rad_to_deg(radian: f64) -> f64 {
-    (radian * 180.0)/std::f64::consts::PI
+impl Settings {
+    pub fn new() -> Self {
+        Self { use_radians: false }
+    }
 }
 
 /* Evaluate a prefix(RPN) expression
  * Returns false on syntax/domain errors */
-pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) -> bool {
+pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>, settings: &mut Settings) -> bool {
     // For each item, match available operations
     for token in expr {
         match token {
@@ -115,7 +116,10 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) -> bool {
                 }
                 // Convert angle to radians
                 let angle: f64 = stack.pop().unwrap();
-                let rad: f64 = deg_to_rad(angle);
+                let rad: f64 = match settings.use_radians {
+                    true => angle,
+                    false => angle.to_radians()
+                };
                 stack.push(rad.sin());
             },
 
@@ -127,7 +131,10 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) -> bool {
                 }
                 // Convert angle to radians
                 let angle: f64 = stack.pop().unwrap();
-                let rad: f64 = deg_to_rad(angle);
+                let rad: f64 = match settings.use_radians {
+                    true => angle,
+                    false => angle.to_radians()
+                };
                 stack.push(rad.cos());
             },
 
@@ -139,7 +146,10 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) -> bool {
                 }
                 // Convert angle to radians
                 let angle: f64 = stack.pop().unwrap();
-                let rad: f64 = deg_to_rad(angle);
+                let rad: f64 = match settings.use_radians {
+                    true => angle,
+                    false => angle.to_radians()
+                };
                 stack.push(rad.tan());
             },
 
@@ -193,6 +203,45 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) -> bool {
                     return false;
                 }
             },
+
+            "sdeg" => { // settings: use degrees
+                settings.use_radians = false;
+            },
+
+            "srad" => { // settings: use radians
+                settings.use_radians = true;
+            },
+
+            "deg" => { // convert rad to deg
+                // Check if stack has enough items
+                if stack.len() < 1 {
+                    println!("ERR: stack is empty or either has too few elements.");
+                    return false;
+                }
+                // Compute value
+                let value: f64 = stack.pop().unwrap();
+                stack.push(value.to_degrees());
+            },
+
+            "rad" => { // convert deg to rad
+                // Check if stack has enough items
+                if stack.len() < 1 {
+                    println!("ERR: stack is empty or either has too few elements.");
+                    return false;
+                }
+                // Compute value
+                let value: f64 = stack.pop().unwrap();
+                stack.push(value.to_radians());
+            },
+
+            "pi" => { // pi constant
+                stack.push(std::f64::consts::PI);
+            },
+
+            "e" => { // euler constant
+                stack.push(std::f64::consts::E);
+            },
+
             // Stack options
 
             "c" => { // CLEAR THE STACK
@@ -231,9 +280,9 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>) -> bool {
                 }
                 let head: &f64 = stack.last().unwrap();
                 if head.fract() == 0.0 { // If number is integer
-                    println!("{0}", rad_to_deg(*head));
+                    println!("{0}", (*head).to_degrees());
                 } else {
-                    println!("{0:.4}", rad_to_deg(*head));
+                    println!("{0:.4}", (*head).to_degrees());
                 }
             },
 

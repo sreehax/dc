@@ -49,11 +49,12 @@ fn main(){
     // Handle command line parameters if required
     if matches.is_present("expression") { // Inline expression option
         let expressions: Vec<&str> = matches.values_of("expression").unwrap().collect(); // Retrieve parameter
+        let mut settings = evaluate_expr::Settings::new();
         for expression in expressions { // Handle multiple expressions at once
             // Tokenize expression
             let tokens: Vec<&str> = expression.trim().split(' ').collect();
             // Evaluate expression
-            evaluate_expr::evaluate_expression(tokens, &mut stack_vec);
+            evaluate_expr::evaluate_expression(tokens, &mut stack_vec, &mut settings);
 
         }
         // There's nothing left to do
@@ -81,8 +82,9 @@ fn main(){
             // Tokenize buffer
             file_buffer.retain(|c| {c != '\n'});
             let tokens: Vec<&str> = file_buffer.split(' ').collect();
+            let mut settings = evaluate_expr::Settings::new();
             // Evaluate buffer
-            evaluate_expr::evaluate_expression(tokens, &mut stack_vec);
+            evaluate_expr::evaluate_expression(tokens, &mut stack_vec, &mut &mut settings);
         }
         // There's nothing left to do
         cli_args = true;
@@ -106,7 +108,7 @@ fn main(){
      if cli_args == true {
          std::process::exit(0);
      }
-
+    let mut settings = evaluate_expr::Settings::new();
     // Otherwise, just read from standard input
     loop {
         // Read from stdin
@@ -118,7 +120,7 @@ fn main(){
         let tokens: Vec<&str> = user_input.trim().split(' ').collect();
 
         // Evaluate expression
-        evaluate_expr::evaluate_expression(tokens, &mut stack_vec); // We borrow stack, since we need to reuse it
+        evaluate_expr::evaluate_expression(tokens, &mut stack_vec, &mut settings); // We borrow stack, since we need to reuse it
 
         // Clear user input string
         user_input.clear();
