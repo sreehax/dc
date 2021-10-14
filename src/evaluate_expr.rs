@@ -1,10 +1,11 @@
 pub struct Settings {
-    use_radians: bool
+    use_radians: bool,
+    radix: usize
 }
 
 impl Settings {
     pub fn new() -> Self {
-        Self { use_radians: false }
+        Self { use_radians: false, radix: 4 }
     }
 }
 
@@ -244,6 +245,17 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>, settings: &mut
 
             // Stack options
 
+            "k" => { // set precision
+                // Check if stack has enough items
+                if stack.len() < 1 {
+                    println!("ERR: stack is empty or either has too few elements.");
+                    return false;
+                }
+                // set value
+                let value = stack.pop().unwrap() as usize;
+                settings.radix = value;
+            }
+
             "c" => { // CLEAR THE STACK
                 stack.clear();
             },
@@ -268,7 +280,7 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>, settings: &mut
                 if head.fract() == 0.0 { // If number is integer
                     println!("{0}", head); // Print without any rounding
                 } else {
-                    println!("{0:.4}", head); // Print with radix = 4
+                    println!("{0:.1$}", head, settings.radix); // Print with radix = 4
                 }
             },
 
@@ -282,7 +294,7 @@ pub fn evaluate_expression(expr: Vec<&str>, stack: &mut Vec<f64>, settings: &mut
                 if head.fract() == 0.0 { // If number is integer
                     println!("{0}", (*head).to_degrees());
                 } else {
-                    println!("{0:.4}", (*head).to_degrees());
+                    println!("{0:.1$}", (*head).to_degrees(), settings.radix);
                 }
             },
 
